@@ -1,0 +1,57 @@
+import unittest
+import sys
+import os
+
+# Add the directory of the EmotionDetection package to system path (ensure importability)
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+from EmotionDetection import emotion_detector, load_emotion_model
+
+class TestEmotionDetection(unittest.TestCase):
+    """Unit tests for EmotionDetection package core functions"""
+    
+    @classmethod
+    def setUpClass(cls):
+        """Run once before all tests: load emotion detection model"""
+        cls.model = load_emotion_model()
+
+    def test_valid_text_positive_emotion(self):
+        """Test emotion detection with positive text input"""
+        input_text = "I am extremely happy with the project results!"
+        result = emotion_detector(input_text, self.model)
+        
+        # Verify output format and content
+        self.assertEqual(result["input_text"], input_text)
+        self.assertIn("predictions", result)
+        self.assertIn("dominant_emotion", result)
+        self.assertEqual(result["dominant_emotion"], "positive")
+        self.assertGreater(result["dominant_score"], 0.7)
+
+    def test_valid_text_negative_emotion(self):
+        """Test emotion detection with negative text input"""
+        input_text = "This is the worst experience I've ever had."
+        result = emotion_detector(input_text, self.model)
+        
+        self.assertEqual(result["input_text"], input_text)
+        self.assertEqual(result["dominant_emotion"], "negative")
+        self.assertGreater(result["dominant_score"], 0.7)
+
+    def test_empty_text_input(self):
+        """Test emotion detection with empty text input"""
+        input_text = ""
+        with self.assertRaises(ValueError):
+            emotion_detector(input_text, self.model)
+
+    def test_non_string_input(self):
+        """Test emotion detection with non-string input (invalid type)"""
+        input_text = 12345  # Integer instead of string
+        with self.assertRaises(TypeError):
+            emotion_detector(input_text, self.model)
+
+    def test_model_loading(self):
+        """Test if emotion detection model loads successfully"""
+        self.assertIsNotNone(self.model)
+        self.assertEqual(type(self.model).__name__, "NLClassifier")
+
+if __name__ == "__main__":
+    # Run all unit tests and show verbose output
+    unittest.main(verbosity=2)

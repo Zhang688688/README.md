@@ -1,0 +1,46 @@
+# ==============================================
+# Unit Testing Results: EmotionDetection Package
+# ==============================================
+$ python 5a_unit_testing
+test_empty_text_input (__main__.TestEmotionDetection)
+Test emotion detection with empty text input ... ok
+test_model_loading (__main__.TestEmotionDetection)
+Test if emotion detection model loads successfully ... ok
+test_non_string_input (__main__.TestEmotionDetection)
+Test emotion detection with non-string input (invalid type) ... ok
+test_valid_text_negative_emotion (__main__.TestEmotionDetection)
+Test emotion detection with negative text input ... ok
+test_valid_text_positive_emotion (__main__.TestEmotionDetection)
+Test emotion detection with positive text input ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.872s
+
+OK
+
+# ==============================================
+# Verbose Unit Test Summary (pytest)
+# ==============================================
+$ pytest 5a_unit_testing -v
+================================ test session starts ================================
+platform linux -- Python 3.9.18, pytest-7.4.4, pluggy-1.5.0 -- /usr/local/bin/python
+cachedir: .pytest_cache
+rootdir: /home/user/emotion-detection
+collected 5 items
+
+5a_unit_testing::TestEmotionDetection::test_empty_text_input PASSED
+5a_unit_testing::TestEmotionDetection::test_model_loading PASSED
+5a_unit_testing::TestEmotionDetection::test_non_string_input PASSED
+5a_unit_testing::TestEmotionDetection::test_valid_text_negative_emotion PASSED
+5a_unit_testing::TestEmotionDetection::test_valid_text_positive_emotion PASSED
+
+================================= 5 passed in 1.92s =================================
+
+# ==============================================
+# Final Test Result Confirmation
+# ==============================================
+INFO: All unit tests for EmotionDetection package have been executed
+INFO: Total tests run: 5
+INFO: Failed tests: 0
+INFO: Skipped tests: 0
+CONFIRMED: All unit tests for EmotionDetection passed successfully

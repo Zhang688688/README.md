@@ -1,0 +1,68 @@
+import tensorflow as tf
+import numpy as np
+from tensorflow.lite.support.task import text
+
+def load_emotion_model(model_path: str = "text_classification_model.tflite") -> text.NLClassifier:
+    """Load pre-trained TensorFlow Lite text classification model"""
+    return text.NLClassifier.create_from_file(model_path)
+
+def emotion_detector(input_text: str, model: text.NLClassifier) -> dict:
+    """
+    Modified emotion_detector function to return standardized output format
+    Output format aligns with TensorFlow Lite text classification specs:
+    {
+        "input_text": str,
+        "predictions": [
+            {"category": str, "score": float},
+            {"category": str, "score": float}
+        ],
+        "dominant_emotion": str,
+        "dominant_score": float
+    }
+    """
+    # Run inference on input text
+    classification_result = model.classify(input_text)
+    
+    # Format predictions to match TF Lite standard output
+    predictions = []
+    max_score = 0.0
+    dominant_emotion = ""
+    
+    for category in classification_result.classifications[0].categories:
+        score = round(category.score, 5)
+        predictions.append({
+            "category": category.label,
+            "score": score
+        })
+        # Identify dominant emotion
+        if score > max_score:
+            max_score = score
+            dominant_emotion = category.label
+    
+    # Return standardized output format
+    return {
+        "input_text": input_text,
+        "predictions": predictions,
+        "dominant_emotion": dominant_emotion,
+        "dominant_score": max_score
+    }
+
+def main():
+    # Example usage
+    model = load_emotion_model()
+    test_texts = [
+        "This is the best movie I've seen in recent years. Strongly recommend it!",
+        "What a waste of my time."
+    ]
+    
+    for text in test_texts:
+        result = emotion_detector(text, model)
+        print("=== Emotion Detection Result ===")
+        print(f"Input Text: {result['input_text']}")
+        print("Predictions:")
+        for pred in result["predictions"]:
+            print(f"  - {pred['category']}: {pred['score']:.5f}")
+        print(f"Dominant Emotion: {result['dominant_emotion']} (Score: {result['dominant_score']:.5f})\n")
+
+if __name__ == "__main__":
+    main()

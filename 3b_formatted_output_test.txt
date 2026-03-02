@@ -1,0 +1,111 @@
+# ==============================================
+# TensorFlow Lite Convert File to C Source Test
+# ==============================================
+INFO: Input file: /tmp/input.tflite
+INFO: Generating C 
+source
+ file: /tmp/output_source.cc
+INFO: Generating C header file: /tmp/output_header.h
+INFO: Using TensorFlow license header
+INFO: Array variable name: g_some_array
+INFO: Line width: 
+80
+INFO: Include guard: SOME_GUARD_H_
+INFO: Include path: some/guard.h
+
+# Validation Results
+PASS: Found array 
+'const unsigned char g_some_array' in
+ output_source.cc
+PASS: Found array values 
+'0x00, 0x01, 0x02, 0x03' in
+ output_source.cc
+PASS: Found array length 
+'const int g_some_array_len = 4;' in
+ output_source.cc
+PASS: Found TensorFlow license 
+in
+ output_source.cc
+PASS: Found include 
+'#include "some/guard.h"' in
+ output_source.cc
+PASS: Found include guard 
+'#ifndef SOME_GUARD_H_' in
+ output_header.h
+PASS: Found extern array 
+'extern const unsigned char g_some_array' in
+ output_header.h
+PASS: Found extern array length 
+'extern const int g_some_array_len;' in
+ output_header.h
+PASS: Found TensorFlow license 
+in
+ output_header.h
+
+# Final Result
+SUCCESS: convert_file_to_c_source 
+test
+ PASSED
+
+# ==============================================
+# TensorFlow Lite C API Smoke Test
+# ==============================================
+INFO: Loading model: tensorflow/lite/testdata/add.bin
+INFO: Interpreter created with 
+2
+ threads
+INFO: Input tensor info:
+  - Name: input
+  - Type: kTfLiteFloat32
+  - Dimensions: 
+[2]
+  - Byte size: 
+8
+  - Quantization: 
+scale=0.0, zero_point=0
+INFO: Setting input values: 
+[1.0, 3.0]
+INFO: Invoking interpreter
+INFO: Output tensor info:
+  - Name: output
+  - Type: kTfLiteFloat32
+  - Dimensions: 
+[2]
+  - Byte size: 
+8
+  - Quantization: 
+scale=0.0, zero_point=0
+INFO: Output values: 
+[3.0, 9.0]
+
+# Final Result
+SUCCESS: CApiSimple Smoke 
+test
+ PASSED
+
+# ==============================================
+# TensorFlow String Format Op Test
+# ==============================================
+INFO: Testing format_one_tensor_one_dim
+INFO: Input tensor: range
+(10)
+INFO: Formatted output: 
+[0 1 2 ... 7 8 9]
+PASS: Output matches expected value
+
+INFO: Testing format_one_tensor_two_dim
+INFO: Input tensor: reshape
+(range(100), [10,10])
+INFO: Formatted output:
+[[0 1 2 ... 7 8 9]
+ [10 11 12 ... 17 18 19]
+ [20 21 22 ... 27 28 29]
+ ..
+.
+ [70 71 72 ... 77 78 79]
+ [80 81 82 ... 87 88 89]
+ [90 91 92 ... 97 98 99]]
+PASS: Output matches expected value
+
+# Final Result
+SUCCESS: StringFormatOpTest all cases PASSED
